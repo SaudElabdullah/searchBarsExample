@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:search/utils/size_config.dart';
 
 class SearchTextField extends StatelessWidget {
-  const SearchTextField({Key? key, required this.textEditingController})
+  const SearchTextField({Key? key, required this.textEditingController, this.onTap})
       : super(key: key);
   final TextEditingController textEditingController;
+  final onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class SearchTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextFormField(
+        onTap: onTap,
         controller: textEditingController,
         style: TextStyle(
           color: Colors.white,
