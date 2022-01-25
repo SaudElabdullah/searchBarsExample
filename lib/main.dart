@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:search/search_bars/bottom_search.dart';
+import 'package:search/search_bars/search_bar_with_animation.dart';
 import 'package:search/utils/size_config.dart';
 
 void main() {

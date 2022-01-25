@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:search/utils/size_config.dart';
 import 'package:search/widgets/search_text_field.dart';
 
+///This search bar works as follow => when scrolling down it hides, and when scrolling top is shows.
+///Finally, When pressing, it moves to top.
 class BottomSearch extends StatefulWidget {
   const BottomSearch({Key? key}) : super(key: key);
 
@@ -10,8 +13,8 @@ class BottomSearch extends StatefulWidget {
 }
 
 class _BottomSearchState extends State<BottomSearch> {
-  double dy = 0;
-  late double top;
+  late double dy;
+  late double searchPosition;
 
   Widget searchBar = Container(
     color: Colors.transparent,
@@ -30,7 +33,7 @@ class _BottomSearchState extends State<BottomSearch> {
       if (dy - details.globalPosition.dy.floorToDouble() > 0) {
         searchBar = SearchTextField(
           textEditingController: TextEditingController(),
-          onTap: (){
+          passedFunction: (){
             changePosition();
           },
         );
@@ -59,20 +62,21 @@ class _BottomSearchState extends State<BottomSearch> {
 
   void changePosition(){
     setState(() {
-      top = 30;
+      searchPosition = SizeConfig.heightMultiplier! * 1;
     });
   }
 
   void returnPosition(){
     setState(() {
-      top = 650;
+      searchPosition = SizeConfig.heightMultiplier! * 80;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    top = 650;
+    searchPosition = SizeConfig.heightMultiplier! * 80;
+    dy = 0;
   }
 
   @override
@@ -90,12 +94,12 @@ class _BottomSearchState extends State<BottomSearch> {
             alignment: AlignmentDirectional.center,
             children: [
               Container(
-                color: Colors.red,
-                height: 700,
-                width: 400,
+                color: Colors.transparent,
+                height: SizeConfig.heightMultiplier! * 100,
+                width: SizeConfig.widthMultiplier! * 100,
               ),
               AnimatedPositioned(
-                top: top,
+                top: searchPosition,
                 duration: const Duration(milliseconds: 100),
                 child: GestureDetector(
                   onTap: (){

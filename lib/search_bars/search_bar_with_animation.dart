@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:search/utils/size_config.dart';
 import 'package:search/widgets/search_text_field.dart';
 
+
+///This widget is an search bar with title and animation.
+///Feel free to run it and see how it works.
 class SearchBarWithAnimation extends StatefulWidget {
   const SearchBarWithAnimation({Key? key}) : super(key: key);
 
@@ -11,37 +14,39 @@ class SearchBarWithAnimation extends StatefulWidget {
 
 class _SearchBarWithAnimationState extends State<SearchBarWithAnimation> {
   late TextEditingController textEditingController;
-  late List<Widget> changingWidgets;
+  late List<Widget> widgetsList;
   late Widget actionWidget;
   late Widget search;
-  bool isPressed = false;
+  late bool isPressed;
 
   Widget actionButton() {
     setState(() {
       isPressed = !isPressed;
       if (isPressed) {
-        actionWidget = changingWidgets[3];
-        search = changingWidgets[1];
+        actionWidget = widgetsList[3];
+        search = widgetsList[1];
       } else {
-        actionWidget = changingWidgets[2];
-        search = changingWidgets[0];
+        actionWidget = widgetsList[2];
+        search = widgetsList[0];
       }
     });
     return actionWidget;
   }
 
-  Widget _animation() => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        transitionBuilder: (Widget child, Animation<double> animation) =>
-            SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(1.2, 0),
-            end: const Offset(0, 0),
-          ).animate(animation),
-          child: child,
-        ),
-        child: search,
-      );
+  Widget _animation() {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 150),
+      transitionBuilder: (Widget child, Animation<double> animation) =>
+          SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1.0, 0),
+              end: const Offset(0, 0),
+            ).animate(animation),
+            child: child,
+          ),
+      child: search,
+    );
+  }
 
   List<Widget> _actions() => ([actionWidget]);
 
@@ -49,7 +54,7 @@ class _SearchBarWithAnimationState extends State<SearchBarWithAnimation> {
   void initState() {
     super.initState();
     textEditingController = TextEditingController();
-    changingWidgets = [
+    widgetsList = [
       Text(
         'Search bar with animation',
         style: TextStyle(
@@ -70,27 +75,28 @@ class _SearchBarWithAnimationState extends State<SearchBarWithAnimation> {
           color: Colors.white,
         ),
       ),
-      GestureDetector(
-        onTap: () {
-          actionButton();
-          textEditingController.clear();
-        },
+      Center(
         child: Padding(
-          padding: EdgeInsets.only(
-            right: SizeConfig.widthMultiplier! * 3,
-          ),
-          child: Text(
-            'Close',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: SizeConfig.textMultiplier! * 2,
+          padding: EdgeInsets.only(right: SizeConfig.widthMultiplier! * 3,),
+          child: GestureDetector(
+            onTap: () {
+              actionButton();
+              textEditingController.clear();
+            },
+            child: Text(
+              'Close',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: SizeConfig.textMultiplier! * 2,
+              ),
             ),
           ),
         ),
       )
     ];
-    search = changingWidgets[0];
-    actionWidget = changingWidgets[2];
+    search = widgetsList[0];
+    actionWidget = widgetsList[2];
+    isPressed = false;
   }
 
   @override
